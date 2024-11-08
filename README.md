@@ -13,7 +13,7 @@ With Vim-Plug
 
 If you use vim-plug, add this line to your .vimrc or init.vim:
 
-Plug 'yourusername/vimgpt'
+Plug 'tommy2118/vimgpt'
 
 Then, install it by running:
 
