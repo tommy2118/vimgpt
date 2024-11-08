@@ -1,0 +1,105 @@
+*VimGPT*                  *vimgpt*             *vimgpt.vim*             *chatgpt-plugin*
+
+VimGPT: A Vim Plugin for ChatGPT Interactions
+=============================================
+
+VimGPT is a Vim plugin that enables interaction with OpenAI's ChatGPT model directly within Vim.
+You can submit prompts, request code snippets, engage in continuous conversations, and display
+responses in the Quickfix List or full-screen code buffers.
+
+-----------------------------------------------------------------------
+Prerequisites                                                    *vimgpt-prerequisites*
+- **API Key**: Ensure that you have an OpenAI API key, available in your environment as `$OPENAI_API_KEY`.
+- **Curl**: The plugin relies on `curl` to send HTTP requests.
+
+-----------------------------------------------------------------------
+Installation                                                    *vimgpt-installation*
+To install VimGPT, place the `vimgpt.vim` file in your Vim plugins directory, or use a plugin manager like [vim-plug]:
+
+    Plug 'path/to/vimgpt.vim'
+
+After installing, reload Vim and ensure `$OPENAI_API_KEY` is set in your environment.
+
+-----------------------------------------------------------------------
+Commands                                                        *vimgpt-commands*
+This plugin provides several commands to interact with ChatGPT in different ways:
+
+                                                        *:ChatGPT*
+| :ChatGPT <prompt> | Sends a single prompt to ChatGPT and displays the response in the Quickfix List. 
+|                   | Each use clears the conversation history.
+| **Example**:      | :ChatGPT "Explain recursion in simple terms"
+
+                                                        *:ChatGPTCode*
+| :ChatGPTCode <prompt> | Requests code from ChatGPT and displays only the code blocks in a new buffer. 
+|                       | Clears conversation history for each command.
+| **Example**:          | :ChatGPTCode "Show me a Python function to calculate factorial"
+
+                                                        *:ChatGPTConversation*
+| :ChatGPTConversation <prompt> | Sends a prompt to ChatGPT while retaining conversation history, 
+|                               | allowing for ongoing interaction with context.
+| **Example**:                  |
+|    :ChatGPTConversation "Hello, who are you?"
+|    :ChatGPTConversation "Can you tell me more about yourself?"
+
+                                                        *:ChatGPTBuffer*
+| :ChatGPTBuffer | Sends a custom prompt combined with selected text (or the entire buffer if no selection) 
+|                | as a single request.
+| **Usage**:     | Select text in visual mode, then `:ChatGPTBuffer`. If no text is selected, the entire buffer is used.
+
+-----------------------------------------------------------------------
+Function Details                                                *vimgpt-functions*
+The plugin’s main functions and their purposes are listed below:
+
+                                                        *VimgptRequest*
+| VimgptRequest(prompt, code_only) | Sends a prompt to ChatGPT and clears conversation history. If `code_only` is 1,
+|                                  | only code blocks are displayed in a new buffer; otherwise, the response goes 
+|                                  | to the Quickfix List.
+
+                                                        *VimgptConversationRequest*
+| VimgptConversationRequest(prompt) | Sends a prompt with conversation history retained, displaying the response 
+|                                   | in the Quickfix List.
+
+                                                        *VimgptRequestFromBufferWithPrompt*
+| VimgptRequestFromBufferWithPrompt() | Combines a custom prompt with selected text or entire buffer content 
+|                                     | and sends to ChatGPT as a single prompt, without history retention.
+
+                                                        *ExtractCodeBlocks*
+| ExtractCodeBlocks(response) | Extracts only code blocks from response text. Detects lines between ``` markers 
+|                             | and returns code. If no code is found, shows a helpful message.
+
+                                                        *DisplayCodeInNewBuffer*
+| DisplayCodeInNewBuffer(code_content) | Opens a new buffer to display code content full-screen with a unique 
+|                                      | name. Configured as `nofile` and `noswapfile` for easy cleanup.
+
+                                                        *DisplayInQuickfix*
+| DisplayInQuickfix(paragraphs) | Formats and displays response text in the Quickfix List for readability.
+
+-----------------------------------------------------------------------
+Troubleshooting                                                 *vimgpt-troubleshooting*
+If you encounter issues:
+- **API Key Missing**: Ensure `$OPENAI_API_KEY` is set in your environment.
+- **Curl Dependency**: Make sure `curl` is installed on your system.
+- **Clearing Buffers**: Use `:bwipeout` if buffer conflicts occur.
+
+-----------------------------------------------------------------------
+Examples                                                        *vimgpt-examples*
+
+### Single Prompt
+    :ChatGPT "What is the difference between HTTP and HTTPS?"
+
+### Code-Only Response
+    :ChatGPTCode "Provide a JavaScript function to reverse a string"
+
+### Continuous Conversation
+    :ChatGPTConversation "Who are you?"
+    :ChatGPTConversation "Can you tell me more about your capabilities?"
+
+### Buffer with Custom Prompt
+Select text in visual mode and run:
+    :ChatGPTBuffer
+Or, if no text is selected, the entire buffer will be sent.
+
+-----------------------------------------------------------------------
+Author and License                                              *vimgpt-author*
+This plugin was developed to simplify interaction with ChatGPT within Vim. 
+Feel free to modify and adapt it to your needs.
